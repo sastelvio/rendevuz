@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sastelvio</groupId>
-	<artifactId>rendevuz</artifactId>
+	<artifactId>rendezvous</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>rendevuz</name>
 	<description>Project to scheduling apointments implemented using microservice arquitecture</description>
