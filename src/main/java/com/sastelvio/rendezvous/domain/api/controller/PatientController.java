@@ -11,36 +11,46 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/patient")
 public class PatientController {
     private final PatientService service;
+    private final PatientMapper mapper;
 
     @PostMapping
     public ResponseEntity<PatientResponse> save(@RequestBody PatientRequest request){
         Patient patient = PatientMapper.toPatient(request);
         Patient save = service.save(patient);
-        PatientResponse patientResponse = PatientMapper.toPatientResponse(save);
+        PatientResponse patientResponse = mapper.toPatientResponse(save);
         return ResponseEntity.status(HttpStatus.CREATED).body(patientResponse);
     }
 
     @GetMapping
-    public ResponseEntity<List<Patient>> findAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
+    public ResponseEntity<List<PatientResponse>> findAll(){
+        List<PatientResponse> patientResponse = service.findAll()
+                .stream()
+                .map(mapper::toPatientResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(patientResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Patient> findById(@PathVariable Long id){
-        Optional<Patient> optPatient = service.findById(id);
-        return optPatient.map(patient -> ResponseEntity.status(HttpStatus.OK).body(patient)).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<PatientResponse> findById(@PathVariable Long id){
+        return service.findById(id)
+                .map(mapper::toPatientResponse)
+                .map(patientResponse -> ResponseEntity.status(HttpStatus.OK).body(patientResponse))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping
-    public ResponseEntity<Patient> update(@RequestBody Patient patient){
-        return ResponseEntity.status(HttpStatus.OK).body(service.save(patient));
+    public ResponseEntity<PatientResponse> update(@PathVariable Long id, @RequestBody PatientRequest request){
+        Patient patient = PatientMapper.toPatient(request);
+        Patient save = service.update(id, patient);
+        PatientResponse patientResponse = mapper.toPatientResponse(save);
+        return ResponseEntity.status(HttpStatus.OK).body(patientResponse);
     }
 
     @DeleteMapping("/{id}")

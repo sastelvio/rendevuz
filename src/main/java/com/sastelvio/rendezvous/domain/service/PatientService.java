@@ -54,6 +54,15 @@ public class PatientService {
         return repository.findById(id);
     }
 
+    public Patient update(Long id, Patient patient) {
+        Optional<Patient> optPatient = this.findById(id);
+        if (optPatient.isEmpty()) {
+            throw new BusinessException("Patient not recorded.");
+        }
+        patient.setId(id);
+        return save(patient);
+    }
+
     public void delete(Long id){
         repository.deleteById(id);
     }

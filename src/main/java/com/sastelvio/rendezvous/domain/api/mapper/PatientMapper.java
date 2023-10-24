@@ -3,7 +3,11 @@ package com.sastelvio.rendezvous.domain.api.mapper;
 import com.sastelvio.rendezvous.domain.api.dto.request.PatientRequest;
 import com.sastelvio.rendezvous.domain.api.dto.response.PatientResponse;
 import com.sastelvio.rendezvous.domain.entity.Patient;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class PatientMapper {
     public static Patient toPatient(PatientRequest patientRequest){
         Patient patient = new Patient();
@@ -14,7 +18,7 @@ public class PatientMapper {
         return patient;
     }
 
-    public static PatientResponse toPatientResponse(Patient patient){
+    public PatientResponse toPatientResponse(Patient patient){
         PatientResponse patientResponse = new PatientResponse();
         patientResponse.setId(patient.getId());
         patientResponse.setFirstName(patient.getFirstName());
