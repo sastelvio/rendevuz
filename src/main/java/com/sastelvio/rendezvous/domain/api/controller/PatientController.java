@@ -1,5 +1,8 @@
 package com.sastelvio.rendezvous.domain.api.controller;
 
+import com.sastelvio.rendezvous.domain.api.dto.request.PatientRequest;
+import com.sastelvio.rendezvous.domain.api.dto.response.PatientResponse;
+import com.sastelvio.rendezvous.domain.api.mapper.PatientMapper;
 import com.sastelvio.rendezvous.domain.entity.Patient;
 import com.sastelvio.rendezvous.domain.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +20,11 @@ public class PatientController {
     private final PatientService service;
 
     @PostMapping
-    public ResponseEntity<Patient> save(@RequestBody Patient patient){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(patient));
+    public ResponseEntity<PatientResponse> save(@RequestBody PatientRequest request){
+        Patient patient = PatientMapper.toPatient(request);
+        Patient save = service.save(patient);
+        PatientResponse patientResponse = PatientMapper.toPatientResponse(save);
+        return ResponseEntity.status(HttpStatus.CREATED).body(patientResponse);
     }
 
     @GetMapping
