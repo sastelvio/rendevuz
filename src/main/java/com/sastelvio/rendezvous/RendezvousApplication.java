@@ -1,4 +1,4 @@
-package com.sastelvio.rendevuz;
+package com.sastelvio.rendezvous;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

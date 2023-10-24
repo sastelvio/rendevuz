@@ -1,4 +1,4 @@
-package com.sastelvio.rendevuz;
+package com.sastelvio.rendezvous;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

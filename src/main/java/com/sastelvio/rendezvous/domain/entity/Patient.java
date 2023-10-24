@@ -1,4 +1,4 @@
-package com.sastelvio.rendevuz.domain.entity;
+package com.sastelvio.rendezvous.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
