@@ -21,6 +21,5 @@ public class Agenda {
     @Column(name = "date_creation")
     private LocalDateTime dateCreation;
     @ManyToOne
-    @Column(name = "patient_id")
     private Patient patient;
 }

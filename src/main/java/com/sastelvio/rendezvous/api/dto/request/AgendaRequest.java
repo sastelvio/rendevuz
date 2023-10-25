@@ -23,5 +23,5 @@ public class AgendaRequest {
     @Future
     private LocalDateTime schedule;
     @NotNull
-    private Patient patientId;
+    private Patient patient;
 }
