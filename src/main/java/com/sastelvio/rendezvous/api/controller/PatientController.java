@@ -22,7 +22,7 @@ public class PatientController {
     private final PatientMapper mapper;
 
     @PostMapping
-    public ResponseEntity<PatientResponse> save(@Valid @RequestBody PatientRequest request){
+    public ResponseEntity<PatientResponse> save(@Valid @RequestBody PatientRequest request) {
         Patient patient = mapper.toPatient(request);
         Patient save = service.save(patient);
         PatientResponse patientResponse = mapper.toPatientResponse(save);
@@ -30,23 +30,23 @@ public class PatientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PatientResponse>> findAll(){
-       List<Patient> patients = service.findAll();
-       List<PatientResponse> patientsResponse = mapper.toPatientResponseList(patients);
+    public ResponseEntity<List<PatientResponse>> findAll() {
+        List<Patient> patients = service.findAll();
+        List<PatientResponse> patientsResponse = mapper.toPatientResponseList(patients);
         return ResponseEntity.status(HttpStatus.OK).body(patientsResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PatientResponse> findById(@PathVariable Long id){
+    public ResponseEntity<PatientResponse> findById(@PathVariable Long id) {
         Optional<Patient> optPatient = service.findById(id);
-        if(optPatient.isEmpty()){
+        if (optPatient.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toPatientResponse(optPatient.get()));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PatientResponse> update(@PathVariable Long id, @Valid @RequestBody PatientRequest request){
+    public ResponseEntity<PatientResponse> update(@PathVariable Long id, @Valid @RequestBody PatientRequest request) {
         Patient patient = mapper.toPatient(request);
         Patient save = service.update(id, patient);
         PatientResponse patientResponse = mapper.toPatientResponse(save);
@@ -54,7 +54,7 @@ public class PatientController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

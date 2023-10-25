@@ -16,16 +16,16 @@ import java.util.Optional;
 public class PatientService {
     private final PatientRepository repository;
 
-    public Patient save(Patient patient){
+    public Patient save(Patient patient) {
         //validate uniqueness of email
         boolean emailExists = false;
         Optional<Patient> optPatientFindByEmail = repository.findByEmail(patient.getEmail());
-        if(optPatientFindByEmail.isPresent()){
-            if(!optPatientFindByEmail.get().getId().equals(patient.getId())){
+        if (optPatientFindByEmail.isPresent()) {
+            if (!optPatientFindByEmail.get().getId().equals(patient.getId())) {
                 emailExists = true;
             }
         }
-        if(emailExists){
+        if (emailExists) {
             throw new BusinessException("There is a record using this Email.");
         }
 
@@ -33,39 +33,32 @@ public class PatientService {
         //validate uniqueness of social security
         boolean socialSecurityExists = false;
         Optional<Patient> optPatientFindBySocialSecurity = repository.findBySocialSecurity(patient.getSocialSecurity());
-
-        if(optPatientFindBySocialSecurity.isPresent()){
-            if(!optPatientFindBySocialSecurity.get().getId().equals(patient.getId())){
+        if (optPatientFindBySocialSecurity.isPresent()) {
+            if (!optPatientFindBySocialSecurity.get().getId().equals(patient.getId())) {
                 socialSecurityExists = true;
             }
         }
-        if(socialSecurityExists){
+        if (socialSecurityExists) {
             throw new BusinessException("There is a record using this Social Security.");
         }
 
         return repository.save(patient);
     }
 
-    public List<Patient> findAll(){
-        return repository.findAll();
-    }
+    public List<Patient> findAll() { return repository.findAll(); }
 
-    public Optional<Patient> findById(Long id){
-        return repository.findById(id);
-    }
+    public Optional<Patient> findById(Long id) { return repository.findById(id); }
 
     public Patient update(Long id, Patient patient) {
         Optional<Patient> optPatient = this.findById(id);
         if (optPatient.isEmpty()) {
-            throw new BusinessException("Patient not recorded.");
+            throw new BusinessException("No patient found to update!");
         }
         patient.setId(id);
         return save(patient);
     }
 
-    public void delete(Long id){
-        repository.deleteById(id);
-    }
+    public void delete(Long id) { repository.deleteById(id); }
 
 
 }

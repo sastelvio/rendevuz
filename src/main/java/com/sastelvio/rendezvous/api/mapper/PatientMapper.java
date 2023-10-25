@@ -16,15 +16,15 @@ import java.util.stream.Collectors;
 public class PatientMapper {
     private final ModelMapper mapper;
 
-    public Patient toPatient(PatientRequest request){
+    public Patient toPatient(PatientRequest request) {
         return mapper.map(request, Patient.class);
     }
 
-    public PatientResponse toPatientResponse(Patient patient){
+    public PatientResponse toPatientResponse(Patient patient) {
         return mapper.map(patient, PatientResponse.class);
     }
 
-    public List<PatientResponse> toPatientResponseList(List<Patient> patients){
+    public List<PatientResponse> toPatientResponseList(List<Patient> patients) {
         return patients.stream()
                 .map(this::toPatientResponse)
                 .collect(Collectors.toList());
