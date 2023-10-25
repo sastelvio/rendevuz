@@ -2,6 +2,7 @@ package com.sastelvio.rendezvous.api.controller;
 
 import com.sastelvio.rendezvous.api.dto.request.AgendaRequest;
 import com.sastelvio.rendezvous.api.dto.response.AgendaResponse;
+import com.sastelvio.rendezvous.api.mapper.AgendaMapper;
 import com.sastelvio.rendezvous.domain.entity.Agenda;
 import com.sastelvio.rendezvous.domain.service.AgendaService;
 import jakarta.validation.Valid;
