@@ -1,4 +1,4 @@
-package com.sastelvio.rendezvous.domain.api.dto.response;
+package com.sastelvio.rendezvous.api.dto.response;
 
 
 import lombok.AllArgsConstructor;
