@@ -5,6 +5,7 @@ import com.sastelvio.rendezvous.api.dto.request.PatientRequest;
 import com.sastelvio.rendezvous.api.mapper.PatientMapper;
 import com.sastelvio.rendezvous.domain.entity.Patient;
 import com.sastelvio.rendezvous.domain.service.PatientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class PatientController {
     private final PatientMapper mapper;
 
     @PostMapping
-    public ResponseEntity<PatientResponse> save(@RequestBody PatientRequest request){
+    public ResponseEntity<PatientResponse> save(@Valid @RequestBody PatientRequest request){
         Patient patient = mapper.toPatient(request);
         Patient save = service.save(patient);
         PatientResponse patientResponse = mapper.toPatientResponse(save);
@@ -44,8 +45,8 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toPatientResponse(optPatient.get()));
     }
 
-    @PutMapping
-    public ResponseEntity<PatientResponse> update(@PathVariable Long id, @RequestBody PatientRequest request){
+    @PutMapping("/{id}")
+    public ResponseEntity<PatientResponse> update(@PathVariable Long id, @Valid @RequestBody PatientRequest request){
         Patient patient = mapper.toPatient(request);
         Patient save = service.update(id, patient);
         PatientResponse patientResponse = mapper.toPatientResponse(save);
