@@ -17,22 +17,23 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AgendaService {
     private final AgendaRepository repository;
-    private final PatientService patient;
+    private final PatientService patientService;
 
     public Agenda save(Agenda agenda) {
         //check if agenda exists
-        Optional<Patient> patientInAgenda = patient.findById(agenda.getPatient().getId());
+        Optional<Patient> patientInAgenda = patientService.findById(agenda.getPatient().getId());
         if (patientInAgenda.isEmpty()) {
             throw new BusinessException("Patient not found!");
         }
 
+        //TODO fix the bug that allows 2 records in the same schedule
         //validate the scheduled time, one appointment per datetime
         Optional<Agenda> bySchedule = repository.findBySchedule(agenda.getSchedule());
         if (bySchedule.isPresent()) {
             throw new BusinessException("This date and time already has an appointment!");
         }
         agenda.setPatient(patientInAgenda.get());
-        agenda.setSchedule(LocalDateTime.now());
+        //agenda.setSchedule(LocalDateTime.now());
         return repository.save(agenda);
     }
 

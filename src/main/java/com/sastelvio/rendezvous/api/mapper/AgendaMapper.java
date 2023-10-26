@@ -14,13 +14,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AgendaMapper {
     private final ModelMapper mapper;
+    private final PatientMapper patientMapper; // Assuming you have a PatientMapper
 
     public Agenda toAgenda(AgendaRequest request) {
         return mapper.map(request, Agenda.class);
     }
 
     public AgendaResponse toAgendaResponse(Agenda agenda) {
-        return mapper.map(agenda, AgendaResponse.class);
+        AgendaResponse response = mapper.map(agenda, AgendaResponse.class);
+
+        // Map the patient to a PatientResponse
+        if (agenda.getPatient() != null) {
+            response.setPatientResponse(patientMapper.toPatientResponse(agenda.getPatient()));
+        }
+
+        return response;
     }
 
     public List<AgendaResponse> toAgendaResponseList(List<Agenda> agendas) {

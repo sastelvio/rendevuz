@@ -4,22 +4,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class CustomExceptionHandler {
+public class ExceptionHandler {
 
-    @ExceptionHandler(BusinessException.class)
+    @org.springframework.web.bind.annotation.ExceptionHandler(BusinessException.class)
     @ResponseBody
-    public ResponseEntity<CustomExceptionResponse> handleBusinessException(BusinessException e) {
-        return new ResponseEntity<>(new CustomExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ExceptionResponse> handleBusinessException(BusinessException e) {
+        return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
         // Extract validation errors and build a custom response
         List<String> validationErrors = ex.getBindingResult()
