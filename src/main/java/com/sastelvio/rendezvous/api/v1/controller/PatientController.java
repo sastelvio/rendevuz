@@ -3,6 +3,7 @@ package com.sastelvio.rendezvous.api.v1.controller;
 import com.sastelvio.rendezvous.api.v1.dto.response.PatientResponse;
 import com.sastelvio.rendezvous.api.v1.dto.request.PatientRequest;
 import com.sastelvio.rendezvous.api.v1.mapper.PatientMapper;
+import com.sastelvio.rendezvous.api.v1.openapi.PatientSpringDoc;
 import com.sastelvio.rendezvous.domain.entity.Patient;
 import com.sastelvio.rendezvous.domain.service.PatientService;
 import jakarta.validation.Valid;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/patient")
-public class PatientController {
+public class PatientController implements PatientSpringDoc {
     private final PatientService service;
     private final PatientMapper mapper;
 
