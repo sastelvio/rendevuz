@@ -1,13 +1,12 @@
-package com.sastelvio.rendezvous.api.mapper;
+package com.sastelvio.rendezvous.api.v1.mapper;
 
-import com.sastelvio.rendezvous.api.dto.response.PatientResponse;
-import com.sastelvio.rendezvous.api.dto.request.PatientRequest;
+import com.sastelvio.rendezvous.api.v1.dto.response.PatientResponse;
+import com.sastelvio.rendezvous.api.v1.dto.request.PatientRequest;
 import com.sastelvio.rendezvous.domain.entity.Patient;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

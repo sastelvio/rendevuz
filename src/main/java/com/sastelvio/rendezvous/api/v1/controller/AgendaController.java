@@ -1,8 +1,8 @@
-package com.sastelvio.rendezvous.api.controller;
+package com.sastelvio.rendezvous.api.v1.controller;
 
-import com.sastelvio.rendezvous.api.dto.request.AgendaRequest;
-import com.sastelvio.rendezvous.api.dto.response.AgendaResponse;
-import com.sastelvio.rendezvous.api.mapper.AgendaMapper;
+import com.sastelvio.rendezvous.api.v1.dto.request.AgendaRequest;
+import com.sastelvio.rendezvous.api.v1.dto.response.AgendaResponse;
+import com.sastelvio.rendezvous.api.v1.mapper.AgendaMapper;
 import com.sastelvio.rendezvous.domain.entity.Agenda;
 import com.sastelvio.rendezvous.domain.service.AgendaService;
 import jakarta.validation.Valid;
@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/agenda")
+@RequestMapping("/v1/agenda")
 public class AgendaController {
     private final AgendaService service;
     private final AgendaMapper mapper;

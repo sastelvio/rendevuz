@@ -1,6 +1,5 @@
-package com.sastelvio.rendezvous.api.dto.response;
+package com.sastelvio.rendezvous.api.v1.dto.response;
 
-import com.sastelvio.rendezvous.domain.entity.Patient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,7 @@
-package com.sastelvio.rendezvous.api.mapper;
+package com.sastelvio.rendezvous.api.v1.mapper;
 
-import com.sastelvio.rendezvous.api.dto.request.AgendaRequest;
-import com.sastelvio.rendezvous.api.dto.response.AgendaResponse;
+import com.sastelvio.rendezvous.api.v1.dto.request.AgendaRequest;
+import com.sastelvio.rendezvous.api.v1.dto.response.AgendaResponse;
 import com.sastelvio.rendezvous.domain.entity.Agenda;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

@@ -1,4 +1,4 @@
-package com.sastelvio.rendezvous.api.dto.request;
+package com.sastelvio.rendezvous.api.v1.dto.request;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;

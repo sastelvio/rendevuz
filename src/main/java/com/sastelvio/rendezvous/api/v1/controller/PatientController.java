@@ -1,8 +1,8 @@
-package com.sastelvio.rendezvous.api.controller;
+package com.sastelvio.rendezvous.api.v1.controller;
 
-import com.sastelvio.rendezvous.api.dto.response.PatientResponse;
-import com.sastelvio.rendezvous.api.dto.request.PatientRequest;
-import com.sastelvio.rendezvous.api.mapper.PatientMapper;
+import com.sastelvio.rendezvous.api.v1.dto.response.PatientResponse;
+import com.sastelvio.rendezvous.api.v1.dto.request.PatientRequest;
+import com.sastelvio.rendezvous.api.v1.mapper.PatientMapper;
 import com.sastelvio.rendezvous.domain.entity.Patient;
 import com.sastelvio.rendezvous.domain.service.PatientService;
 import jakarta.validation.Valid;
@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/patient")
+@RequestMapping("/v1/patient")
 public class PatientController {
     private final PatientService service;
     private final PatientMapper mapper;
