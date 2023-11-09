@@ -18,11 +18,11 @@ public class SpringDocConfig {
                 .info(
                         new Info()
                                 .title("Rendezvous API")
-                                .version("1")
+                                .version("v1.1")
                                 .description("This is a project in Java Spring Boot to practice")
                                 .license(
                                         new License()
-                                                .name("Apache 2.0")
+                                                .name("SpringDoc OpenAPI")
                                                 .url("https://springdoc.org")
                                 )
                 )
