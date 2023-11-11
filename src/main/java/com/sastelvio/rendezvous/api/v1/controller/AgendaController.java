@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1/agenda")
+@RequestMapping("/api/v1/agenda")
 public class AgendaController implements AgendaSpringDoc {
     private final AgendaService service;
     private final AgendaMapper mapper;

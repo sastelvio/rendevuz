@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1/patient")
+@RequestMapping("/api/v1/patient")
 public class PatientController implements PatientSpringDoc {
     private final PatientService service;
     private final PatientMapper mapper;

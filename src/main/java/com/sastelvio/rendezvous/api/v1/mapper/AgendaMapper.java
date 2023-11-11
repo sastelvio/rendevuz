@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AgendaMapper {
     private final ModelMapper mapper;
-    private final PatientMapper patientMapper; // Assuming you have a PatientMapper
+    private final PatientMapper patientMapper;
 
     public Agenda toAgenda(AgendaRequest request) {
         return mapper.map(request, Agenda.class);

@@ -1,4 +1,4 @@
-create table agenda(
+CREATE TABLE IF NOT EXISTS agenda (
 	id serial primary key,
 	description varchar(255),
 	schedule timestamp,
