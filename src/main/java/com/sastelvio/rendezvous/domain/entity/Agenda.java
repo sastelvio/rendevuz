@@ -19,7 +19,6 @@ public class Agenda {
     @NotBlank
     @Column(name = "description")
     private String description;
-    @NotBlank
     @Column(name = "schedule")
     private LocalDateTime schedule;
     @CreationTimestamp

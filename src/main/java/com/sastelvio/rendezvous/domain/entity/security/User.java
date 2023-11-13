@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @NotBlank
     @Size(max = 200)
     private String email;
-    @Size(min = 6, max = 20)
+    @Size(min = 6, max = 255)
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;

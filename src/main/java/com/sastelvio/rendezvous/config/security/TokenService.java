@@ -22,7 +22,7 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("auth")
                     .withSubject(user.getUsername())
-                    .withExpiresAt(getExpirationdate())
+                    .withExpiresAt(getExpirationDate())
                     .sign(algorithm);
             return token;
         } catch (JWTCreationException exception){
@@ -30,20 +30,22 @@ public class TokenService {
         }
     }
 
-    public String validateToken(String token){
-        try{
+    public String validateToken(String token) {
+        try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
+            // Remove the "Bearer " prefix from the token if it exists
+            token = token.replace("Bearer ", "");
             return JWT.require(algorithm)
                     .withIssuer("auth")
                     .build()
                     .verify(token)
                     .getSubject();
-        } catch (JWTVerificationException exception){
-            return "";
+        } catch (JWTVerificationException exception) {
+            return exception.toString();
         }
     }
 
-    private Instant getExpirationdate(){
+    private Instant getExpirationDate(){
         //TODO Look for best practices to this code, to confirm that this is the best way to implement it
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("+01:00"));
     }
