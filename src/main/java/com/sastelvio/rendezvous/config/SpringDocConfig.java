@@ -50,7 +50,7 @@ public class SpringDocConfig {
                 .tags(
                         Arrays.asList(
                                 new Tag().name("Patient").description("Patient APIs"),
-                                new Tag().name("Agenda").description("Agenda APIs")
+                                new Tag().name("Appointment").description("Appointment APIs")
                         )
                 );
     }

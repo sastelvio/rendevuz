@@ -1,11 +1,11 @@
 package com.sastelvio.rendezvous.api.v1.controller;
 
-import com.sastelvio.rendezvous.api.v1.dto.request.AgendaRequest;
-import com.sastelvio.rendezvous.api.v1.dto.response.AgendaResponse;
-import com.sastelvio.rendezvous.api.v1.mapper.AgendaMapper;
-import com.sastelvio.rendezvous.api.v1.openapi.AgendaSpringDoc;
-import com.sastelvio.rendezvous.domain.entity.Agenda;
-import com.sastelvio.rendezvous.domain.service.AgendaService;
+import com.sastelvio.rendezvous.api.v1.dto.request.AppointmentRequest;
+import com.sastelvio.rendezvous.api.v1.dto.response.AppointmentResponse;
+import com.sastelvio.rendezvous.api.v1.mapper.AppointmentMapper;
+import com.sastelvio.rendezvous.api.v1.openapi.AppointmentSpringDoc;
+import com.sastelvio.rendezvous.domain.entity.Appointment;
+import com.sastelvio.rendezvous.domain.service.AppointmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,41 +17,41 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/agenda")
-public class AgendaController implements AgendaSpringDoc {
-    private final AgendaService service;
-    private final AgendaMapper mapper;
+@RequestMapping("/api/v1/appointment")
+public class AppointmentController implements AppointmentSpringDoc {
+    private final AppointmentService service;
+    private final AppointmentMapper mapper;
 
     @PostMapping
-    public ResponseEntity<AgendaResponse> save(@Valid @RequestBody AgendaRequest request) {
-        Agenda agenda = mapper.toAgenda(request);
-        Agenda save = service.save(agenda);
-        AgendaResponse agendaResponse = mapper.toAgendaResponse(save);
-        return ResponseEntity.status(HttpStatus.CREATED).body(agendaResponse);
+    public ResponseEntity<AppointmentResponse> save(@Valid @RequestBody AppointmentRequest request) {
+        Appointment appointment = mapper.toAppointment(request);
+        Appointment save = service.save(appointment);
+        AppointmentResponse appointmentResponse = mapper.toAppointmentResponse(save);
+        return ResponseEntity.status(HttpStatus.CREATED).body(appointmentResponse);
     }
 
     @GetMapping
-    public ResponseEntity<List<AgendaResponse>> findAll() {
-        List<Agenda> agendas = service.findAll();
-        List<AgendaResponse> agendasResponse = mapper.toAgendaResponseList(agendas);
-        return ResponseEntity.status(HttpStatus.OK).body(agendasResponse);
+    public ResponseEntity<List<AppointmentResponse>> findAll() {
+        List<Appointment> appointments = service.findAll();
+        List<AppointmentResponse> appointmentsResponse = mapper.toAppointmentResponseList(appointments);
+        return ResponseEntity.status(HttpStatus.OK).body(appointmentsResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AgendaResponse> findById(@PathVariable Long id) {
-        Optional<Agenda> optAgenda = service.findById(id);
-        if (optAgenda.isEmpty()) {
+    public ResponseEntity<AppointmentResponse> findById(@PathVariable Long id) {
+        Optional<Appointment> optAppointment = service.findById(id);
+        if (optAppointment.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(mapper.toAgendaResponse(optAgenda.get()));
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.toAppointmentResponse(optAppointment.get()));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AgendaResponse> update(@PathVariable Long id, @Valid @RequestBody AgendaRequest request) {
-        Agenda patient = mapper.toAgenda(request);
-        Agenda save = service.update(id, patient);
-        AgendaResponse agendaResponse = mapper.toAgendaResponse(save);
-        return ResponseEntity.status(HttpStatus.OK).body(agendaResponse);
+    public ResponseEntity<AppointmentResponse> update(@PathVariable Long id, @Valid @RequestBody AppointmentRequest request) {
+        Appointment patient = mapper.toAppointment(request);
+        Appointment save = service.update(id, patient);
+        AppointmentResponse appointmentResponse = mapper.toAppointmentResponse(save);
+        return ResponseEntity.status(HttpStatus.OK).body(appointmentResponse);
     }
 
     @DeleteMapping("/{id}")

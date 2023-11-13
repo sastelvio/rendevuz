@@ -1,8 +1,8 @@
 package com.sastelvio.rendezvous.api.v1.mapper;
 
-import com.sastelvio.rendezvous.api.v1.dto.request.AgendaRequest;
-import com.sastelvio.rendezvous.api.v1.dto.response.AgendaResponse;
-import com.sastelvio.rendezvous.domain.entity.Agenda;
+import com.sastelvio.rendezvous.api.v1.dto.request.AppointmentRequest;
+import com.sastelvio.rendezvous.api.v1.dto.response.AppointmentResponse;
+import com.sastelvio.rendezvous.domain.entity.Appointment;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -12,28 +12,28 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class AgendaMapper {
+public class AppointmentMapper {
     private final ModelMapper mapper;
     private final PatientMapper patientMapper;
 
-    public Agenda toAgenda(AgendaRequest request) {
-        return mapper.map(request, Agenda.class);
+    public Appointment toAppointment(AppointmentRequest request) {
+        return mapper.map(request, Appointment.class);
     }
 
-    public AgendaResponse toAgendaResponse(Agenda agenda) {
-        AgendaResponse response = mapper.map(agenda, AgendaResponse.class);
+    public AppointmentResponse toAppointmentResponse(Appointment appointment) {
+        AppointmentResponse response = mapper.map(appointment, AppointmentResponse.class);
 
         // Map the patient to a PatientResponse
-        if (agenda.getPatient() != null) {
-            response.setPatientResponse(patientMapper.toPatientResponse(agenda.getPatient()));
+        if (appointment.getPatient() != null) {
+            response.setPatientResponse(patientMapper.toPatientResponse(appointment.getPatient()));
         }
 
         return response;
     }
 
-    public List<AgendaResponse> toAgendaResponseList(List<Agenda> agendas) {
-        return agendas.stream()
-                .map(this::toAgendaResponse)
+    public List<AppointmentResponse> toAppointmentResponseList(List<Appointment> appointments) {
+        return appointments.stream()
+                .map(this::toAppointmentResponse)
                 .collect(Collectors.toList());
     }
 }

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AgendaRequest {
+public class AppointmentRequest {
     @NotBlank(message = "Description is required!")
     private String description;
     @Future

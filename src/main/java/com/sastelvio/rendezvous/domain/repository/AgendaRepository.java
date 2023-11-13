@@ -1,6 +1,6 @@
 package com.sastelvio.rendezvous.domain.repository;
 
-import com.sastelvio.rendezvous.domain.entity.Agenda;
+import com.sastelvio.rendezvous.domain.entity.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
-public interface AgendaRepository extends JpaRepository<Agenda, Long> {
+public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    Optional<Agenda>  findBySchedule(LocalDateTime schedule);
+    Optional<Appointment>  findBySchedule(LocalDateTime schedule);
 }

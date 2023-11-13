@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AgendaResponse {
+public class AppointmentResponse {
     private Long id;
     private String description;
     private LocalDateTime schedule;
