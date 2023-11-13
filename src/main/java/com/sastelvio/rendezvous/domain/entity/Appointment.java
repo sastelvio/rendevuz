@@ -25,7 +25,7 @@ public class Appointment {
     @Column(name = "date_creation", nullable = false, updatable = false)
     private LocalDateTime dateCreation;
     @Column(name = "date_update")
-    private LocalDateTime dataUpdate;
+    private LocalDateTime dateUpdate;
     @ManyToOne
     private Patient patient;
 }

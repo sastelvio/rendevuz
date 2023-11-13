@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ public class AppointmentService {
 
     public Appointment save(Appointment appointment) {
         //check if appointment exists
+        //TODO BUG 1: This could generate a bug at certain point, because it trying to get patient without checking if it exists
         Optional<Patient> patientInAppointment = patientService.findById(appointment.getPatient().getId());
         if (patientInAppointment.isEmpty()) {
             throw new BusinessException("Patient not found!");
@@ -32,7 +34,9 @@ public class AppointmentService {
             throw new BusinessException("This date and time already has an appointment!");
         }
         appointment.setPatient(patientInAppointment.get());
-        //appointment.setSchedule(LocalDateTime.now());
+
+        appointment.setDateCreation(LocalDateTime.now());
+        appointment.setDateUpdate(LocalDateTime.now());
         return repository.save(appointment);
     }
 
@@ -50,6 +54,7 @@ public class AppointmentService {
             throw new BusinessException("No appointment found to update!");
         }
         appointment.setId(id);
+        appointment.setDateUpdate(LocalDateTime.now());
         return save(appointment);
     }
 
