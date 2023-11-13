@@ -28,14 +28,22 @@ public class SecurityConfig {
     @Autowired
     UserService userService;
 
+    private static final String[] AUTH_WHITELIST = {
+            "/auth/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-ui.html"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/**")
-                                .permitAll().anyRequest().authenticated()
+                        .requestMatchers(AUTH_WHITELIST).permitAll()
+                        .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

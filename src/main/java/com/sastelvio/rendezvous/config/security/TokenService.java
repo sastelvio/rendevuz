@@ -14,7 +14,7 @@ import java.time.ZoneOffset;
 
 @Service
 public class TokenService {
-    private String secret = "secret";
+    private String secret = "secret"; //must be a secret word
 
     public String generateToken(User user){
         try{
@@ -38,7 +38,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             // Remove the "Bearer " prefix from the token if it exists
-            token = token.replace("Bearer ", "");
+            //token = token.replace("Bearer ", "");
             return JWT.require(algorithm)
                     .withIssuer("auth")
                     .build()
@@ -51,6 +51,6 @@ public class TokenService {
 
     private Instant getExpirationDate(){
         //TODO Look for best practices to this code, to confirm that this is the best way to implement it
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("+01:00"));
+        return LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.of("+01:00"));
     }
 }
