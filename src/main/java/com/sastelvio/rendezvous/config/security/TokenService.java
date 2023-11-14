@@ -51,6 +51,6 @@ public class TokenService {
 
     private Instant getExpirationDate(){
         //TODO Look for best practices to this code, to confirm that this is the best way to implement it
-        return LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.of("+01:00"));
+        return LocalDateTime.now().plusMinutes(30).toInstant(ZoneOffset.of("+01:00"));
     }
 }

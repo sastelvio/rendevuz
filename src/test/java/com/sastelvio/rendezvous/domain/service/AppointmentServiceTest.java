@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AppointmentServiceTest {
@@ -44,16 +45,16 @@ class AppointmentServiceTest {
         appointment.setPatient(patient); // Set the patient on the appointment
 
         when(patientService.findById(1L)).thenReturn(Optional.of(patient));
-        when(appointmentRepository.findBySchedule(any())).thenReturn(Optional.empty());
+        when(appointmentRepository.findBySchedule(appointment.getSchedule())).thenReturn(Optional.empty());
         when(appointmentRepository.save(appointment)).thenReturn(appointment);
 
         // Act (Test/When)
         Appointment savedAppointment = appointmentService.save(appointment);
 
         // Assert (Validation/Then)
-        Mockito.verify(patientService, times(1)).findById(1L);
-        Mockito.verify(appointmentRepository, times(1)).findBySchedule(any());
-        Mockito.verify(appointmentRepository, times(1)).save(appointment);
+        verify(patientService, times(1)).findById(1L);
+        verify(appointmentRepository, times(1)).findBySchedule(appointment.getSchedule());
+        verify(appointmentRepository, times(1)).save(appointment);
     }
 
     @Test
@@ -118,8 +119,8 @@ class AppointmentServiceTest {
         Appointment updatedAppointment = appointmentService.update(appointmentId, appointment);
 
         // Assert (Validation/Then)
-        Mockito.verify(appointmentRepository, times(1)).findById(appointmentId);
-        Mockito.verify(appointmentRepository, times(1)).save(appointment);
+        verify(appointmentRepository, times(1)).findById(appointmentId);
+        verify(appointmentRepository, times(1)).save(appointment);
     }
 
     @Test
@@ -145,7 +146,7 @@ class AppointmentServiceTest {
         appointmentService.delete(appointmentId);
 
         //validation = Assertion/Then
-        Mockito.verify(appointmentRepository, times(1)).deleteById(appointmentId);
+        verify(appointmentRepository, times(1)).deleteById(appointmentId);
     }
 
     @Test
@@ -160,7 +161,7 @@ class AppointmentServiceTest {
         List<Appointment> foundAppointments = appointmentService.findAll();
 
         //validation = Assertion/Then
-        Mockito.verify(appointmentRepository, times(1)).findAll();
+        verify(appointmentRepository, times(1)).findAll();
     }
 
     @Test
@@ -176,7 +177,7 @@ class AppointmentServiceTest {
         Optional<Appointment> foundAppointment = appointmentService.findById(appointment.getId());
 
         //validation = Assertion/Then
-        Mockito.verify(appointmentRepository, times(1)).findById(appointment.getId());
+        verify(appointmentRepository, times(1)).findById(appointment.getId());
     }
 
 }

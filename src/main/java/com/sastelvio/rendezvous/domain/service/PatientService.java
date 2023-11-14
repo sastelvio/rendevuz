@@ -17,27 +17,30 @@ public class PatientService {
     private final PatientRepository repository;
 
     public Patient save(Patient patient) {
-        //validate uniqueness of email
+        // Validate uniqueness of email
         boolean emailExists = false;
         Optional<Patient> optPatientFindByEmail = repository.findByEmail(patient.getEmail());
         if (optPatientFindByEmail.isPresent()) {
-            if (!optPatientFindByEmail.get().getId().equals(patient.getId())) {
+            Long patientId = optPatientFindByEmail.get().getId();
+            if (patientId != null && patientId.equals(patient.getId())) {
                 emailExists = true;
             }
         }
+
         if (emailExists) {
             throw new BusinessException("There is a record using this Email.");
         }
 
-
-        //validate uniqueness of social security
+        // Validate uniqueness of social security
         boolean socialSecurityExists = false;
         Optional<Patient> optPatientFindBySocialSecurity = repository.findBySocialSecurity(patient.getSocialSecurity());
         if (optPatientFindBySocialSecurity.isPresent()) {
-            if (!optPatientFindBySocialSecurity.get().getId().equals(patient.getId())) {
+            Long patientId = optPatientFindBySocialSecurity.get().getId();
+            if (patientId != null && patientId.equals(patient.getId())) {
                 socialSecurityExists = true;
             }
         }
+
         if (socialSecurityExists) {
             throw new BusinessException("There is a record using this Social Security.");
         }
@@ -59,6 +62,5 @@ public class PatientService {
     }
 
     public void delete(Long id) { repository.deleteById(id); }
-
 
 }
