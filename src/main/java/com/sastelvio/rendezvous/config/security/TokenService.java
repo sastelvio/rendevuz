@@ -1,6 +1,7 @@
 package com.sastelvio.rendezvous.config.security;
 
 import com.sastelvio.rendezvous.domain.entity.security.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -12,11 +13,13 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+@Slf4j
 @Service
 public class TokenService {
     private String secret = "secret"; //must be a secret word
 
     public String generateToken(User user){
+        log.info("generating authentication token...");
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
@@ -30,11 +33,13 @@ public class TokenService {
                     .sign(algorithm);
             return token;
         } catch (JWTCreationException exception){
+            log.error("error while generating token!");
             throw new RuntimeException("ERROR WHILE GENERATION TOKEN", exception);
         }
     }
 
     public String validateToken(String token) {
+        log.info("validating token...");
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             // Remove the "Bearer " prefix from the token if it exists
@@ -45,6 +50,7 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception) {
+            log.error("error while validating token!");
             return exception.toString();
         }
     }

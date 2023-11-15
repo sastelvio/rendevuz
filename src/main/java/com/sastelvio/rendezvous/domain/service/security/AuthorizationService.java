@@ -7,6 +7,7 @@ import com.sastelvio.rendezvous.config.security.TokenService;
 import com.sastelvio.rendezvous.domain.entity.security.User;
 import com.sastelvio.rendezvous.domain.repository.security.UserRepository;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 
-
+@Slf4j
 @Service
 public class AuthorizationService implements UserService {
     @Autowired
@@ -34,6 +35,7 @@ public class AuthorizationService implements UserService {
 
 
     public ResponseEntity<Object> login(@RequestBody @Valid AuthenticationDTO data){
+        log.info("authentication a session: {}", data.username());
         authenticationManager = context.getBean(AuthenticationManager.class);
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
@@ -42,7 +44,8 @@ public class AuthorizationService implements UserService {
     }
 
     public ResponseEntity<Object> register(@RequestBody RegisterDTO registerDTO){
-        if(this.userRepository.findByUsername(registerDTO.username()) != null) return ResponseEntity.badRequest().build();
+        log.info("registering user: {}", registerDTO.username());
+        if(this.userRepository.findByUsername(registerDTO.username()) != null){ log.error("username exists already!"); return ResponseEntity.badRequest().build();}
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDTO.password());
         User newUser = new User(registerDTO.username(), registerDTO.firstName(), registerDTO.lastName(), registerDTO.email(), encryptedPassword, registerDTO.role());
         newUser.setDateCreation(LocalDateTime.now());
