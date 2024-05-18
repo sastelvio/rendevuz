@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS appointment (
 	description varchar(255),
 	schedule timestamp,
 	date_creation timestamp,
+	date_update timestamp,
 	patient_id integer,
 	constraint fk_appointment_patient foreign key(patient_id) references patient(id)
 );
