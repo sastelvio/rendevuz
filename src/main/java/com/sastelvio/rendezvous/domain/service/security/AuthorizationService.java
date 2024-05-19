@@ -39,8 +39,19 @@ public class AuthorizationService implements UserService {
         authenticationManager = context.getBean(AuthenticationManager.class);
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken((User) auth.getPrincipal());
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        User user = (User) auth.getPrincipal();
+        var token = tokenService.generateToken(user);
+
+        return ResponseEntity.ok(
+            new LoginResponseDTO(
+                token, 
+                user.getId().toString(), 
+                user.getFirstName(), 
+                user.getLastName(), 
+                user.getEmail(), 
+                user.getRole().getRole()
+            )
+        );
     }
 
     public ResponseEntity<Object> register(@RequestBody RegisterDTO registerDTO){

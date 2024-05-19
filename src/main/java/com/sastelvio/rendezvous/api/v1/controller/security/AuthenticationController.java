@@ -4,6 +4,8 @@ import com.sastelvio.rendezvous.api.v1.dto.security.AuthenticationDTO;
 import com.sastelvio.rendezvous.api.v1.dto.security.RegisterDTO;
 import com.sastelvio.rendezvous.config.security.TokenBlacklistService;
 import com.sastelvio.rendezvous.config.security.TokenService;
+import com.sastelvio.rendezvous.domain.entity.security.User;
+import com.sastelvio.rendezvous.domain.repository.security.UserRepository;
 import com.sastelvio.rendezvous.domain.service.security.AuthorizationService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +16,10 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,13 +27,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
-//@CrossOrigin(origins = "http://localhost:3000")
 public class AuthenticationController {
     @Autowired
     AuthorizationService authorizationService;
 
     @Autowired
     TokenBlacklistService tokenBlacklistService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody RegisterDTO registerDTO){
@@ -46,5 +53,23 @@ public class AuthenticationController {
         tokenBlacklistService.blacklistToken(token);
         return ResponseEntity.ok().build();
     }  
+
+    
+    @GetMapping("/profile")
+    public ResponseEntity<User> getUserProfile(@AuthenticationPrincipal User userDetails) {
+        String username = userDetails.getUsername();
+
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            // User not found
+            return ResponseEntity.notFound().build();
+        }
+
+        // Remove sensitive information if needed before returning
+        user.setPassword(null);
+
+        return ResponseEntity.ok(user);
+    }
+    
 
 }
