@@ -2,6 +2,8 @@ package com.sastelvio.rendezvous.config.security;
 
 import com.sastelvio.rendezvous.domain.entity.security.User;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -17,6 +19,9 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
     private String secret = "secret"; //must be a secret word
+
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
 
     public String generateToken(User user){
         log.info("generating authentication token...");
@@ -37,9 +42,13 @@ public class TokenService {
             throw new RuntimeException("ERROR WHILE GENERATION TOKEN", exception);
         }
     }
+  
 
     public String validateToken(String token) {
         log.info("validating token...");
+        if (tokenBlacklistService.isTokenBlacklisted(token)) {
+            throw new JWTVerificationException("Token has been invalidated");
+        }
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             // Remove the "Bearer " prefix from the token if it exists
