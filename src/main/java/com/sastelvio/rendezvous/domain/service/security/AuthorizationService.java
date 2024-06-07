@@ -45,7 +45,7 @@ public class AuthorizationService implements UserService {
         return ResponseEntity.ok(
             new LoginResponseDTO(
                 token, 
-                user.getId().toString(), 
+                user.getUsername(), 
                 user.getFirstName(), 
                 user.getLastName(), 
                 user.getEmail(), 
