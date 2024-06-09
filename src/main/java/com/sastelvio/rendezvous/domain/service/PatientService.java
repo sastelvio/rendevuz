@@ -20,35 +20,21 @@ public class PatientService {
 
     public Patient save(Patient patient) {
         log.info("saving patient...");
-        // Validate uniqueness of email
-        boolean emailExists = false;
-        Optional<Patient> optPatientFindByEmail = repository.findByEmail(patient.getEmail());
-        if (optPatientFindByEmail.isPresent()) {
-            Long patientId = optPatientFindByEmail.get().getId();
-            if (patientId != null && patientId.equals(patient.getId())) {
-                emailExists = true;
-            }
-        }
 
-        if (emailExists) {
+        // Validate uniqueness of email
+        Optional<Patient> optPatientFindByEmail = repository.findByEmail(patient.getEmail());
+        if (optPatientFindByEmail.isPresent() && !optPatientFindByEmail.get().getId().equals(patient.getId())) {
             log.error("There is a record using this Email!");
             throw new BusinessException("There is a record using this Email!");
         }
 
         // Validate uniqueness of social security
-        boolean socialSecurityExists = false;
         Optional<Patient> optPatientFindBySocialSecurity = repository.findBySocialSecurity(patient.getSocialSecurity());
-        if (optPatientFindBySocialSecurity.isPresent()) {
-            Long patientId = optPatientFindBySocialSecurity.get().getId();
-            if (patientId != null && patientId.equals(patient.getId())) {
-                socialSecurityExists = true;
-            }
-        }
-
-        if (socialSecurityExists) {
+        if (optPatientFindBySocialSecurity.isPresent() && !optPatientFindBySocialSecurity.get().getId().equals(patient.getId())) {
             log.error("There is a record using this Social Security!");
             throw new BusinessException("There is a record using this Social Security!");
         }
+
         return repository.save(patient);
     }
 
@@ -68,5 +54,4 @@ public class PatientService {
     }
 
     public void delete(Long id) { log.info("deleting patient: {}", id); repository.deleteById(id); }
-
 }
