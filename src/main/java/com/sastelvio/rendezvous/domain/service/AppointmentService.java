@@ -23,27 +23,30 @@ public class AppointmentService {
 
     public Appointment save(Appointment appointment) {
         log.info("saving appointment...");
-        //check if appointment exists
-        //TODO BUG 1: This could generate a bug at certain point, because it trying to get patient without checking if it exists
+        // check if appointment exists
+        // TODO BUG 1: This could generate a bug at certain point, because it trying to get patient without checking if it exists
         Optional<Patient> patientInAppointment = patientService.findById(appointment.getPatient().getId());
         if (patientInAppointment.isEmpty()) {
             log.error("Patient not found!");
             throw new BusinessException("Patient not found!");
         }
-
-        //TODO fix the bug that allows 2 records in the same schedule
-        //validate the scheduled time, one appointment per datetime
-        Optional<Appointment> bySchedule = repository.findBySchedule(appointment.getSchedule());
-        if (bySchedule.isPresent()) {
-            log.error("This date and time already has an appointment!");
-            throw new BusinessException("This date and time already has an appointment!");
+    
+        // if it's a new appointment, check if the schedule already exists
+        if (appointment.getId() == null) {
+            Optional<Appointment> bySchedule = repository.findBySchedule(appointment.getSchedule());
+            if (bySchedule.isPresent()) {
+                log.error("This date and time already has an appointment!");
+                throw new BusinessException("This date and time already has an appointment!");
+            }
         }
+    
         appointment.setPatient(patientInAppointment.get());
-
+    
         appointment.setDateCreation(LocalDateTime.now());
         appointment.setDateUpdate(LocalDateTime.now());
         return repository.save(appointment);
     }
+    
 
     public List<Appointment> findAll() {
         log.info("listing all appointments..."); return repository.findAll();
