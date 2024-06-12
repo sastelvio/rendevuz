@@ -21,11 +21,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AuthorizationServiceTest {
-
 
     @InjectMocks
     private AuthorizationService authorizationService;
@@ -49,8 +49,9 @@ class AuthorizationServiceTest {
         String password = "testPassword";
         Authentication authentication = mock(Authentication.class);
         when(applicationContext.getBean(AuthenticationManager.class)).thenReturn(authenticationManager);
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(authentication);
-        when(authentication.getPrincipal()).thenReturn(new User(username, password, null, null, null, null));
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn(new User(username, password, null, null, null, null, null, null, null, null, null, null, null));
         when(tokenService.generateToken(any(User.class))).thenReturn("testToken");
 
         // Act
@@ -64,8 +65,34 @@ class AuthorizationServiceTest {
     @Test
     public void testRegisterSuccess() {
         // Arrange
-        RegisterDTO registerDTO = new RegisterDTO("testUser", "Test", "User", "test@example.com", "testPassword", Role.USER);
-        User user = new User(registerDTO.username(), registerDTO.password(), registerDTO.lastName(), registerDTO.email(), new BCryptPasswordEncoder().encode(registerDTO.password()), Role.USER);
+        RegisterDTO registerDTO = new RegisterDTO(
+                "testUser",
+                "Test",
+                "User",
+                "test@example.com",
+                0,
+                "Test Abous",
+                "Test Location",
+                "Test Linkedlin",
+                "Test Facebook",
+                "Test Twitter",
+                "Test Instagram",
+                "testPassword",
+                Role.USER);
+        User user = new User(
+                registerDTO.username(),
+                registerDTO.password(),
+                registerDTO.lastName(),
+                registerDTO.email(),
+                registerDTO.phone(),
+                registerDTO.about(),
+                registerDTO.location(),
+                registerDTO.link_linkedin(),
+                registerDTO.link_facebook(),
+                registerDTO.link_twitter(),
+                registerDTO.link_instagram(),
+                new BCryptPasswordEncoder().encode(registerDTO.password()),
+                Role.USER);
         when(userRepository.findByUsername(registerDTO.username())).thenReturn(null);
         when(userRepository.save(any())).thenReturn(user);
 
@@ -80,8 +107,22 @@ class AuthorizationServiceTest {
     @Test
     public void testRegisterDuplicateUsername() {
         // Arrange
-        RegisterDTO registerDTO = new RegisterDTO("testUser", "Test", "User", "test@example.com", "testPassword", Role.USER);
-        when(userRepository.findByUsername(registerDTO.username())).thenReturn(new User(registerDTO.username(), "", "", "", "", Role.USER));
+        RegisterDTO registerDTO = new RegisterDTO(
+                "testUser",
+                "Test",
+                "User",
+                "test@example.com",
+                0,
+                "Test Abous",
+                "Test Location",
+                "Test Linkedlin",
+                "Test Facebook",
+                "Test Twitter",
+                "Test Instagram",
+                "testPassword",
+                Role.USER);
+        when(userRepository.findByUsername(registerDTO.username()))
+                .thenReturn(new User(registerDTO.username(), "", "", "", 0, "", "", "", "", "", "", "", Role.USER));
 
         // Act
         ResponseEntity<Object> responseEntity = authorizationService.register(registerDTO);
@@ -94,7 +135,8 @@ class AuthorizationServiceTest {
     public void testLoadUserByUsername() {
         // Arrange
         String username = "testUser";
-        when(userRepository.findByUsername(username)).thenReturn(new User(username, new BCryptPasswordEncoder().encode("testPassword"), null, null, null, Role.USER));
+        when(userRepository.findByUsername(username)).thenReturn(
+                new User(username, new BCryptPasswordEncoder().encode("testPassword"), null, null, null, null, null, null, null, null, null, null, Role.USER));
 
         // Act
         UserDetails userDetails = authorizationService.userDetailsService().loadUserByUsername(username);

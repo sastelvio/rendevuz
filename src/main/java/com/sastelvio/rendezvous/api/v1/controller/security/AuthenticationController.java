@@ -64,12 +64,10 @@ public class AuthenticationController {
             // User not found
             return ResponseEntity.notFound().build();
         }
-
         // Remove sensitive information if needed before returning
         user.setPassword(null);
-
+        System.out.println(user.getEmail());
         return ResponseEntity.ok(user);
-    }
-    
+    }    
 
 }
