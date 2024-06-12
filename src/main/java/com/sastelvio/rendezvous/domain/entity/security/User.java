@@ -1,6 +1,9 @@
 package com.sastelvio.rendezvous.domain.entity.security;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -37,7 +40,6 @@ public class User implements UserDetails {
     @NotBlank
     @Size(max = 200)
     private String email;
-    @Size(max = 20)
     private Integer phone;
     private String about;
     @Size(max = 100)

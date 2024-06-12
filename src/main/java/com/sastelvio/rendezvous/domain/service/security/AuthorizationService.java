@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -37,8 +38,7 @@ public class AuthorizationService implements UserService {
     private TokenService tokenService;
     private AuthenticationManager authenticationManager;
 
-
-    public ResponseEntity<Object> login(@RequestBody @Valid AuthenticationDTO data){
+    public ResponseEntity<Object> login(@RequestBody @Valid AuthenticationDTO data) {
         log.info("authentication a session: {}", data.username());
         authenticationManager = context.getBean(AuthenticationManager.class);
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
@@ -47,41 +47,78 @@ public class AuthorizationService implements UserService {
         var token = tokenService.generateToken(user);
 
         return ResponseEntity.ok(
-            new LoginResponseDTO(
-                token, 
-                user.getUsername(), 
-                user.getFirstName(), 
-                user.getLastName(), 
-                user.getEmail(), 
-                user.getRole().getRole()
-            )
-        );
+                new LoginResponseDTO(
+                        token,
+                        user.getId().toString(),
+                        user.getUsername(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getEmail(),
+                        user.getRole().getRole()));
     }
 
-    public ResponseEntity<Object> register(@RequestBody RegisterDTO registerDTO){
+    public ResponseEntity<Object> register(@RequestBody RegisterDTO registerDTO) {
         log.info("registering user: {}", registerDTO.username());
-        if(this.userRepository.findByUsername(registerDTO.username()) != null){ log.error("username exists already!"); return ResponseEntity.badRequest().build();}
+        if (this.userRepository.findByUsername(registerDTO.username()) != null) {
+            log.error("username exists already!");
+            return ResponseEntity.badRequest().build();
+        }
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDTO.password());
         User newUser = new User(
-            registerDTO.username(), 
-            registerDTO.firstName(), 
-            registerDTO.lastName(), 
-            registerDTO.email(), 
-            registerDTO.phone(),
-            registerDTO.about(),
-            registerDTO.location(),
-            registerDTO.link_linkedin(),
-            registerDTO.link_facebook(),
-            registerDTO.link_twitter(),
-            registerDTO.link_instagram(),
-            encryptedPassword, 
-            registerDTO.role());
+                registerDTO.username(),
+                registerDTO.firstName(),
+                registerDTO.lastName(),
+                registerDTO.email(),
+                registerDTO.phone(),
+                registerDTO.about(),
+                registerDTO.location(),
+                registerDTO.link_linkedin(),
+                registerDTO.link_facebook(),
+                registerDTO.link_twitter(),
+                registerDTO.link_instagram(),
+                encryptedPassword,
+                registerDTO.role());
         newUser.setDateCreation(LocalDateTime.now());
         this.userRepository.save(newUser);
         return ResponseEntity.ok().build();
     }
-    
 
+    public ResponseEntity<Object> update(UUID id, @RequestBody RegisterDTO updateDTO) {
+        log.info("updating user: {}", updateDTO.username());
+
+        // Busca o usuário pelo ID
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isEmpty()) {
+            log.error("User not found!");
+            return ResponseEntity.notFound().build();
+        }
+
+        // Validação de username único
+        if (!existingUser.get().getUsername().equals(updateDTO.username())
+                && userRepository.findByUsername(updateDTO.username()) != null) {
+            log.error("Username already exists!");
+            return ResponseEntity.badRequest().build();
+        }
+
+        // Atualiza os dados do usuário com os valores do DTO
+        User userToUpdate = existingUser.get();
+        userToUpdate.setUsername(updateDTO.username());
+        userToUpdate.setFirstName(updateDTO.firstName());
+        userToUpdate.setLastName(updateDTO.lastName());
+        userToUpdate.setEmail(updateDTO.email());
+        userToUpdate.setPhone(updateDTO.phone());
+        userToUpdate.setAbout(updateDTO.about());
+        userToUpdate.setLocation(updateDTO.location());
+        userToUpdate.setLink_linkedin(updateDTO.link_linkedin());
+        userToUpdate.setLink_facebook(updateDTO.link_facebook());
+        userToUpdate.setLink_twitter(updateDTO.link_twitter());
+        userToUpdate.setLink_instagram(updateDTO.link_instagram());
+
+        // Salva o usuário atualizado
+        userRepository.save(userToUpdate);
+
+        return ResponseEntity.ok().build();
+    }
 
     @Override
     public UserDetailsService userDetailsService() {
